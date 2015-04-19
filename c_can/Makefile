@@ -21,7 +21,7 @@ default:
 clean:
 	rm -rf *.mod.c *.ko *.o *.symvers *.order
 
-install: rtcan_can.ko
+install: default
 	cp rtcan_can.ko /lib/modules/$(shell uname -r)/kernel/drivers/xenomai/can
 	depmod -a
 else
