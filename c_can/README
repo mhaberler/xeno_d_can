@@ -1,0 +1,41 @@
+to build this driver out-of-tree, run 'make install'
+
+I got this to work as follows:
+
+1. blacklist the vanilla socketcan drivers
+
+mah@epig:~/xeno_d_can/c_can$  cat /etc/modprobe.d/rtcan-blacklist.conf
+
+blacklist c_can_platform
+blacklist c_can
+blacklist can_dev
+
+
+2. enable the can pins using the universal overlay
+
+mah@epig:~/xeno_d_can/c_can$  cat startup.sh
+
+# (could be this properly muxes only can1 - not sure how to config-pin the pins for can0)
+config-pin overlay cape-universal
+config-pin P9.24 can
+config-pin P9.26 can
+
+# load the rtcan mods
+modprobe xeno_can
+modprobe rtcan_can
+
+# start the rtcan interfaces
+
+rtcanconfig rtcan0 -b 1000000 start
+rtcanconfig rtcan1 -b 1000000 start
+
+
+
+3. good to go for RT-CAN I/O:
+
+ah@epig:~/xeno_d_can/c_can$ rtcansend rtcan1 --verbose --identifier=0x1  0x04 0x01 0x00 0x00 0x0f 0xff 0xe7 0x00
+interface rtcan1
+s=0, ifr_name=rtcan1
+<0x001> [8] 04 01 00 00 0f ff e7 00
+Cleaning up...
+
