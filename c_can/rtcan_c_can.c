@@ -213,7 +213,7 @@ enum c_can_bus_error_types {
 };
 
 struct can_bittiming_const c_can_bittiming_const = {
-	.name = "c_can",
+	.name = DRV_NAME,
 	.tseg1_min = 2,		/* Time segment 1 = prop_seg + phase_seg1 */
 	.tseg1_max = 16,
 	.tseg2_min = 1,		/* Time segment 2 = phase_seg2 */

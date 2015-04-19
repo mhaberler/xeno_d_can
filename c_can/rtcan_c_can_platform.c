@@ -96,11 +96,11 @@ static void c_can_hw_raminit(const struct c_can_priv *priv, bool enable)
 
 static struct platform_device_id c_can_id_table[] = {
 	[BOSCH_C_CAN_PLATFORM] = {
-		.name = "c_can",
+		.name = DRV_NAME,
 		.driver_data = BOSCH_C_CAN,
 	},
 	[BOSCH_C_CAN] = {
-		.name = "c_can",
+		.name = DRV_NAME,
 		.driver_data = BOSCH_C_CAN,
 	},
 	[BOSCH_D_CAN] = {
@@ -169,7 +169,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
 	dev_info(&pdev->dev, "setting up step 2: request mem region. Start %x, size %d\n", mem->start, resource_size(mem));
 	
 	if (!request_mem_region(mem->start, resource_size(mem),
-				"c_can")) {
+				DRV_NAME)) {
 		dev_err(&pdev->dev, "resource unavailable\n");
 		ret = -ENODEV;
 		goto exit_free_clk;
@@ -261,12 +261,12 @@ static int c_can_plat_probe(struct platform_device *pdev)
 	ret = register_c_candev(dev);
 	if (ret) {
 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
-			"c_can", ret);
+			DRV_NAME, ret);
 		goto exit_free_device;
 	}
 
 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
-		 "c_can", priv->base, priv->irq);
+		 DRV_NAME, priv->base, priv->irq);
 	return 0;
 
 exit_free_device:
@@ -307,7 +307,7 @@ static int c_can_plat_remove(struct platform_device *pdev)
 static struct platform_driver c_can_plat_driver = {
 	.driver = {
 		/* For legacy platform support */
-		.name = "c_can",
+		.name = DRV_NAME,
 		.owner = THIS_MODULE,
 #ifdef CONFIG_OF
 		.of_match_table = of_match_ptr(c_can_of_table),
