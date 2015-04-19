@@ -191,14 +191,19 @@ struct rtcan_device *alloc_c_can_dev(void);
 
 int register_c_candev(struct rtcan_device *dev);
 void unregister_c_candev(struct rtcan_device *dev);
-static int c_can_interrupt(rtdm_irq_t *irq_handle);
+int c_can_interrupt(rtdm_irq_t *irq_handle);
+int c_can_start_xmit(struct rtcan_device *dev, struct can_frame *cf);
+int c_can_set_bittiming(struct rtcan_device *dev);
+int c_can_set_mode(struct rtcan_device *dev, can_mode_t mode, rtdm_lockctx_t *lock_ctx);
+int c_can_save_bit_time(struct rtcan_device *dev,
+			struct can_bittime *bt,
+			rtdm_lockctx_t *lock_ctx);
+extern struct can_bittiming_const c_can_bittiming_const;
 
 #ifdef CONFIG_PM
 int c_can_power_up(struct rtcan_device *dev);
 int c_can_power_down(struct rtcan_device *dev);
 #endif
 
-static char *c_can_ctrl_name = "DCAN";
-static char *my_board_name = "BBB";
 
 #endif

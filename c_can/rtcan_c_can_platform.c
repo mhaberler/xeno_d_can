@@ -42,8 +42,13 @@
 #include <linux/pinctrl/consumer.h>
 
 #include <rtdm/rtcan.h>
+#include "rtcan_internal.h"
+#include "rtcan_dev.h"
 
 #include "rtcan_c_can.h"
+
+static char *c_can_ctrl_name = "DCAN";
+static char *my_board_name = "BBB";
 
 #define CAN_RAMINIT_START_MASK(i)	(1 << (i))
 

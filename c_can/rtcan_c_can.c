@@ -212,7 +212,7 @@ enum c_can_bus_error_types {
 	C_CAN_ERROR_PASSIVE,
 };
 
-static struct can_bittiming_const c_can_bittiming_const = {
+struct can_bittiming_const c_can_bittiming_const = {
 	.name = "c_can",
 	.tseg1_min = 2,		/* Time segment 1 = prop_seg + phase_seg1 */
 	.tseg1_max = 16,
@@ -532,7 +532,7 @@ static inline int c_can_is_next_tx_obj_busy(struct c_can_priv *priv, int objno)
 	return 0;
 }
 
-static int c_can_start_xmit(struct rtcan_device *dev, struct can_frame *cf)
+int c_can_start_xmit(struct rtcan_device *dev, struct can_frame *cf)
 {
 	u32 msg_obj_no;
 	struct c_can_priv *priv = rtcan_priv(dev);
@@ -551,7 +551,7 @@ static int c_can_start_xmit(struct rtcan_device *dev, struct can_frame *cf)
 	return 0;
 }
 
-static int c_can_set_bittiming(struct rtcan_device *dev)
+int c_can_set_bittiming(struct rtcan_device *dev)
 {
 	unsigned int reg_btr, reg_brpe, ctrl_save;
 	u8 brp, brpe, sjw, tseg1, tseg2;
@@ -655,9 +655,9 @@ static void c_can_chip_config(struct rtcan_device *dev)
 	c_can_set_bittiming(dev);
 }
 
-static int c_can_save_bit_time(struct rtcan_device *dev,
-				 struct can_bittime *bt,
-				 rtdm_lockctx_t *lock_ctx)
+int c_can_save_bit_time(struct rtcan_device *dev,
+			struct can_bittime *bt,
+			rtdm_lockctx_t *lock_ctx)
 {
 	struct c_can_priv *priv = rtcan_priv(dev);
 
@@ -1038,7 +1038,7 @@ static int c_can_handle_bus_err(struct rtcan_device *dev,
 	return 1;
 }
 
-static int c_can_interrupt(rtdm_irq_t *irq_handle)
+int c_can_interrupt(rtdm_irq_t *irq_handle)
 {
 	struct rtcan_device *dev = rtdm_irq_get_arg(irq_handle, void);
 	struct c_can_priv *priv = rtcan_priv(dev);
